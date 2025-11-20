@@ -48,6 +48,15 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'users.User'
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'User API',
+    'DESCRIPTION': 'Multi User Blog API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SECURITY': [{'BearerAuth': []}]
+}
+
 from datetime import timedelta
 
 REST_FRAMEWORK = {
@@ -62,6 +71,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'BLACKLIST_AFTER_ROTATION': True
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
