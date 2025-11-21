@@ -1,6 +1,5 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
 from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated
 
 from .serializers import RegisterSerializer, UserSerializer
 from .permissions import IsSelf
@@ -11,14 +10,14 @@ from .permissions import IsSelf
 User = get_user_model()
 
 class RegisterView(generics.CreateAPIView):
-    serializer_class = RegisterSerializer
     queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
-    permission_classes = [IsAuthenticated, IsSelf]
     serializer_class = UserSerializer
-    queryset = User.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 
 
     def get_object(self):
