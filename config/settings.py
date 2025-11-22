@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
 
     # local apps
-    'apps.users'
+    'apps.users',
+    'apps.posts',
 ]
 
 AUTH_USER_MODEL = 'users.User'
