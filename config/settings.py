@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # local apps
     'apps.users',
     'apps.posts',
+    'apps.comments',
 ]
 
 AUTH_USER_MODEL = 'users.User'
