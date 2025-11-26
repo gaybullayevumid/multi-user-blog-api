@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.posts',
     'apps.comments',
+    'apps.likes',
 ]
 
 AUTH_USER_MODEL = 'users.User'

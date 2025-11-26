@@ -3,5 +3,5 @@ from .views import ToggleLikeView
 
 
 urlpatterns = [
-    path('posts/<int:post_id>/like/', ToggleLikeView.as_view(), name='toggle-like'),
+    path("posts/<int:post_id>/like/", ToggleLikeView.as_view(), name="toggle-like"),
 ]
