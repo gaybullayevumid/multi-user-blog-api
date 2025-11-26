@@ -1,7 +1,8 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
 from .models import Comments
 from .serailizers import CommentSerializer
 from .permissions import IsCommentAuthorOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Create your views here.
@@ -10,6 +11,15 @@ from .permissions import IsCommentAuthorOrReadOnly
 class CommentListCreateView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["author__username"]
+    search_fields = ["content"]
+    ordering_fields = ["created_at"]
 
     def get_queryset(self):
         post_id = self.kwargs["post_id"]
