@@ -3,8 +3,7 @@ from .models import Comments
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField(write_only=True)
-
+    author = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Comments
