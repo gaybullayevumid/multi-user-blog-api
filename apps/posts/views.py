@@ -1,16 +1,21 @@
 from rest_framework import generics, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.throttling import UserRateThrottle
 
 from .serializers import PostSerializer
 from .models import Post
 
 # Create your views here.
 
+class PostCreateThrottle(UserRateThrottle):
+    scope = 'post_create'
+
 
 class PostListCreateView(generics.ListCreateAPIView):
     queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [PostCreateThrottle]
 
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
