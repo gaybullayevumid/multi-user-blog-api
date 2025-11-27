@@ -18,8 +18,8 @@ This project is perfect for backend learners and developers building real-world 
 
 # 🚀 Technologies
 
-- **Python 3.10+**
-- **Django 4+**
+- **Python 3.13+**
+- **Django 5+**
 - **Django REST Framework**
 - **SimpleJWT**
 - **DRF Spectacular (Swagger / Redoc docs)**
