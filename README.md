@@ -213,8 +213,27 @@ HTTP 429 Too Many Requests
 
 # API Documentation
 
-Swagger UI:
+## Swagger UI:
 
 ```swift
 /api/docs/swagger/
+```
+
+## Redoc
+
+```swift
+/api/docs/redoc/
+```
+
+## OpenAPI Schema:
+
+```swift
+/api/schema/
+```
+
+Export schema file:
+
+```swift
+python manage.py spectacular --file schema.yaml
+python manage.py spectacular --file schema.json
 ```
