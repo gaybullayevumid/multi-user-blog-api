@@ -1,16 +1,22 @@
 from rest_framework import generics, permissions, filters
+from rest_framework.throttling import UserRateThrottle
+from django_filters.rest_framework import DjangoFilterBackend
+
 from .models import Comments
 from .serailizers import CommentSerializer
 from .permissions import IsCommentAuthorOrReadOnly
-from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Create your views here.
+
+class CommentCreateThrottle(UserRateThrottle):
+    scope = 'comment_create'
 
 
 class CommentListCreateView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    throttle_classes = [CommentCreateThrottle]
 
     filter_backends = [
         DjangoFilterBackend,
