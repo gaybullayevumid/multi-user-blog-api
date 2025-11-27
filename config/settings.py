@@ -91,6 +91,7 @@ REST_FRAMEWORK = {
         'user': '100/minute',
         'anon': '20/minute',
         'post_create': '10/minute',
+        'comment_create': '30/minute',
     }
 }
 
