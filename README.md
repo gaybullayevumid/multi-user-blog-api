@@ -30,7 +30,7 @@ This project is perfect for backend learners and developers building real-world 
 # 📦 Installation
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/gaybullayevumid/multi-user-blog-api.git
 cd blog-api
 pip install -r requirements.txt
 python manage.py migrate
