@@ -14,7 +14,6 @@ It provides all essential features for a modern blog system:
 
 This project is perfect for backend learners and developers building real-world REST APIs.
 
----
 
 ## 🚀 Technologies
 
@@ -25,7 +24,6 @@ This project is perfect for backend learners and developers building real-world 
 - **DRF Spectacular (Swagger / Redoc docs)**
 - **Django Filter**
 
----
 
 ## 📦 Installation
 
