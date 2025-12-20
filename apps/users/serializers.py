@@ -16,7 +16,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data["password"] != data["password2"]:
-            raise serializers.ValidationError({"password": "Password do not match"})
+            raise serializers.ValidationError({"password": "Passwords do not match"})
         return data
 
     def create(self, validated_data):
@@ -26,11 +26,24 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
             password=validated_data["password"],
         )
-
         return user
 
 
 class UserSerializer(serializers.ModelSerializer):
+    posts_count = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ["id", "username", "email", "avatar", "bio"]
+        fields = [
+            "id", 
+            "username", 
+            "email", 
+            "avatar", 
+            "bio", 
+            "posts_count",
+            "date_joined"
+        ]
+        read_only_fields = ["id", "date_joined", "posts_count"]
+
+    def get_posts_count(self, obj):
+        return obj.posts.count()

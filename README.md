@@ -1,237 +1,400 @@
-# 📘 Blog API — Open Source REST API
+# 📘 Multi-User Blog API
 
-Blog API is an open-source multi-user blogging platform built using Django REST Framework.  
-It provides all essential features for a modern blog system:
+Professional multi-user blogging platform REST API built with Django REST Framework.
 
-- JWT Authentication  
-- Post CRUD  
-- Comment system  
-- Like/Unlike functionality  
-- Search, filtering, ordering  
-- Pagination  
-- Rate limiting (throttling)  
-- Swagger & Redoc API documentation  
+[![Django](https://img.shields.io/badge/Django-5.2-green.svg)](https://www.djangoproject.com/)
+[![DRF](https://img.shields.io/badge/DRF-3.16-red.svg)](https://www.django-rest-framework.org/)
+[![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://www.python.org/)
 
-This project is perfect for backend learners and developers building real-world REST APIs.
+## ✨ Features
 
+- 🔐 JWT Authentication (Access & Refresh Tokens)
+- 👤 User Registration & Profile Management
+- 📝 Full CRUD for Blog Posts
+- 💬 Comment System
+- ❤️ Like/Unlike Posts
+- 🔍 Advanced Search & Filtering
+- 📄 Pagination
+- ⚡ Rate Limiting (Throttling)
+- 📚 Interactive API Documentation (Swagger & ReDoc)
+- 🚀 Optimized Database Queries
+- 🔒 Permission-based Access Control
+- 🌐 CORS Support
+- 📸 Image Upload Support
 
-## 🚀 Technologies
+## 🛠️ Tech Stack
 
 - **Python 3.13+**
-- **Django 5+**
-- **Django REST Framework**
-- **SimpleJWT**
-- **DRF Spectacular (Swagger / Redoc docs)**
-- **Django Filter**
-
+- **Django 5.2**
+- **Django REST Framework 3.16**
+- **SimpleJWT** - JWT Authentication
+- **DRF Spectacular** - API Documentation
+- **Django Filter** - Advanced Filtering
+- **Django CORS Headers** - CORS Support
+- **Pillow** - Image Processing
 
 ## 📦 Installation
 
+### 1. Clone Repository
+
 ```bash
 git clone https://github.com/gaybullayevumid/multi-user-blog-api.git
-cd blog-api
+cd multi-user-blog-api
+```
+
+### 2. Create Virtual Environment
+
+```bash
+python -m venv env
+source env/bin/activate  # On Windows: env\Scripts\activate
+```
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
+
+### 4. Environment Setup
+
+Create `.env` file (or copy from `.env.example`):
+
+```bash
+cp .env.example .env
+```
+
+Update `.env` with your settings:
+
+```env
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+```
+
+### 5. Run Migrations
+
+```bash
+python manage.py makemigrations
 python manage.py migrate
+```
+
+### 6. Create Superuser
+
+```bash
+python manage.py createsuperuser
+```
+
+### 7. Run Server
+
+```bash
 python manage.py runserver
 ```
 
-## Authentication (JWT)
+Server will run at: `http://127.0.0.1:8000/`
 
-All protected endpoints require JWT access tokens.
+## 📖 API Documentation
 
+- **Swagger UI**: `http://127.0.0.1:8000/api/docs/swagger/`
+- **ReDoc**: `http://127.0.0.1:8000/api/docs/redoc/`
+- **OpenAPI Schema**: `http://127.0.0.1:8000/api/schema/`
 
-### Register
+## 🔑 Authentication
 
-```swift
-POST /api/users/register/
-```
+### Register User
 
-Response
-```json
+```http
+POST /api/signup/
+Content-Type: application/json
+
 {
-  "username": "john",
-  "password": "12345"
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "SecurePass123!",
+  "password2": "SecurePass123!"
 }
 ```
 
 ### Login
 
-```swift
-POST /api/users/login/
-```
+```http
+POST /api/login/
+Content-Type: application/json
 
-Response
-
-```json
 {
-  "access": "jwt-access-token",
-  "refresh": "jwt-refresh-token"
+  "username": "john_doe",
+  "password": "SecurePass123!"
 }
 ```
 
-### Authorization header
+**Response:**
+```json
+{
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc..."
+}
+```
 
-```makefile
+### Refresh Token
+
+```http
+POST /api/refresh/
+Content-Type: application/json
+
+{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc..."
+}
+```
+
+### Logout
+
+```http
+POST /api/logout/
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc..."
+}
+```
+
+### Authorization Header
+
+For protected endpoints, include:
+
+```http
 Authorization: Bearer <access_token>
 ```
 
+## 👤 User Endpoints
 
-## User API
+### Get Profile
 
-### Get profile
-
-```swift
-GET /api/users/profile/
+```http
+GET /api/profile/
+Authorization: Bearer <access_token>
 ```
 
-### Update profile
+### Update Profile
 
-```swift
-PATCH /api/users/profile/
-```
+```http
+PATCH /api/profile/
+Authorization: Bearer <access_token>
+Content-Type: multipart/form-data
 
-
-## Posts API
-
-### List posts (with pagination)
-
-```swift
-GET /api/posts/
-```
-
-### Create post
-
-```swift
-POST /api/posts/
-```
-
-Response
-
-```json
 {
-  "content": "My first post!"
+  "bio": "Software Developer",
+  "avatar": <file>
 }
 ```
 
-### Get single post
+## 📝 Post Endpoints
 
-```swift
-GET /api/posts/<id>/
+### List Posts (Paginated)
+
+```http
+GET /api/posts/
+Authorization: Bearer <access_token>
 ```
 
-### Update / Delete
+**Query Parameters:**
+- `page` - Page number
+- `search` - Search in title, content, author
+- `author__username` - Filter by author
+- `ordering` - Sort by field (created_at, updated_at)
 
-```swift
-PATCH /api/posts/<id>/
-DELETE /api/posts/<id>/
+### Create Post
+
+```http
+POST /api/posts/
+Authorization: Bearer <access_token>
+Content-Type: multipart/form-data
+
+{
+  "title": "My First Post",
+  "content": "Post content here...",
+  "image": <file>
+}
 ```
 
-## Comments API
+### Get Single Post
 
-### List comments for a post
+```http
+GET /api/post/<id>/
+Authorization: Bearer <access_token>
+```
 
-```swift
+### Update Post (Author Only)
+
+```http
+PATCH /api/post/<id>/
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "content": "Updated content..."
+}
+```
+
+### Delete Post (Author Only)
+
+```http
+DELETE /api/post/<id>/
+Authorization: Bearer <access_token>
+```
+
+## 💬 Comment Endpoints
+
+### List Comments for Post
+
+```http
 GET /api/posts/<post_id>/comments/
 ```
 
-### Create comment
+**Query Parameters:**
+- `search` - Search in content
+- `author__username` - Filter by author
+- `ordering` - Sort by created_at
 
-```swift
+### Create Comment
+
+```http
 POST /api/posts/<post_id>/comments/
-```
+Authorization: Bearer <access_token>
+Content-Type: application/json
 
-Response
-
-```json
 {
-  "content": "Nice post!"
+  "content": "Great post!"
 }
 ```
 
-## Likes API
+### Update Comment (Author Only)
 
-### Like / Unlike post
+```http
+PATCH /api/comments/<id>/
+Authorization: Bearer <access_token>
+Content-Type: application/json
 
-```swift
-POST /api/posts/<id>/like/
-```
-
-Response
-
-```json
 {
-  "liked": true,
-  "likes_count": 5
+  "content": "Updated comment"
 }
 ```
 
-## Search / Filtering / Ordering
+### Delete Comment (Author Only)
 
-### Search
-
-```swift
-GET /api/posts/?search=django
+```http
+DELETE /api/comments/<id>/
+Authorization: Bearer <access_token>
 ```
 
-### Filter by author
+## ❤️ Like Endpoints
 
-```swift
-GET /api/posts/?author__username=john
+### Toggle Like
+
+```http
+POST /api/posts/<post_id>/like/
+Authorization: Bearer <access_token>
 ```
 
-### Ordering
-
-```swift
-GET /api/posts/?ordering=-created_at
+**Response:**
+```json
+{
+  "message": "Post liked",
+  "liked": true
+}
 ```
 
-## Pagination
-Pagination is enabled by default:
+## 📊 Project Structure
 
-```swift
-GET /api/posts/?page=2
 ```
-Default page size: 10
-
-
-## Rate Limiting (Throttling)
-
-```swift
-user: 100/minute  
-anon: 20/minute  
-post_create: 10/minute  
-comment_create: 30/minute
-```
-
-If the limit is exceeded:
-
-```swift
-HTTP 429 Too Many Requests
+multi-user-blog-api/
+├── apps/
+│   ├── comments/          # Comment app
+│   ├── likes/             # Like app
+│   ├── posts/             # Post app
+│   └── users/             # User app
+├── config/                # Django settings
+├── media/                 # Uploaded files
+├── staticfiles/           # Static files
+├── .env.example           # Environment variables template
+├── .gitignore
+├── manage.py
+├── requirements.txt
+└── README.md
 ```
 
-## API Documentation
+## ⚙️ Configuration
 
-### Swagger UI:
+### Rate Limiting
 
-```swift
-/api/docs/swagger/
+Default throttle rates (in `settings.py`):
+
+```python
+'DEFAULT_THROTTLE_RATES': {
+    'user': '1000/hour',
+    'anon': '100/hour',
+    'post_create': '20/hour',
+    'comment_create': '50/hour',
+}
 ```
 
-### Redoc
+### Pagination
 
-```swift
-/api/docs/redoc/
+Default page size: 10 items per page
+
+### CORS
+
+Configure allowed origins in `.env`:
+
+```env
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
 ```
 
-### OpenAPI Schema:
+## 🔒 Security Features
 
-```swift
-/api/schema/
+- Environment-based SECRET_KEY
+- Password validation
+- JWT token authentication
+- Permission-based access control
+- Rate limiting
+- CORS configuration
+- Secure file uploads
+
+## 🧪 Testing
+
+```bash
+python manage.py test
 ```
 
-Export schema file:
+## 📝 Development
 
-```swift
-python manage.py spectacular --file schema.yaml
-python manage.py spectacular --file schema.json
+### Format Code
+
+```bash
+black .
 ```
+
+### Create Migrations
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 👨‍💻 Author
+
+**Umid Gaybullayev**
+
+- GitHub: [@gaybullayevumid](https://github.com/gaybullayevumid)
+
+## 🌟 Show Your Support
+
+Give a ⭐️ if this project helped you!
