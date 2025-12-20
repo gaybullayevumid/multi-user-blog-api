@@ -1,5 +1,5 @@
 # Core Django
-Django==5.2.8
+Django==5.2.9
 django-filter==25.2
 
 # REST Framework
